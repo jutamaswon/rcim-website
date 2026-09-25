@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: /admin/
+Sitemap: https://www.rcim.in.th/sitemap.xml
+Sitemap: https://www.rcim.in.th/news/sitemap.php

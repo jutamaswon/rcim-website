@@ -1,6 +1,11 @@
 # Historical migration sources stay local.
 /kuweb/
 /audit/
+/.agents/
+/.uv-cache/
+/.tooling/
+__pycache__/
+*.pyc
 /WordPress.2026-09-25.xml
 /backup_2026_09_25_12_36_12-f645b106-db.sql.gz
 /backup_2026_09_25_12_36_12-f645b106-uploads.zip
@@ -19,6 +24,8 @@
 /node_modules/
 /database/backups/
 /database/dumps/
+/site/media/
+/site/config.php
 
 # Images and media are deployed separately from GitHub.
 *.avif

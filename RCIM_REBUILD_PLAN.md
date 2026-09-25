@@ -1,6 +1,6 @@
 # RCIM website rebuild plan
 
-Status: planning. No replacement site has been built or published.
+Status: local build in progress. A replacement site has been generated locally but has not been published. See `README.md` and ignored `audit/verification.json` for current findings.
 
 GitHub scope: the new website source and its new database schema/migrations only. Historical WordPress records, backups, the KU reference, secrets, and images remain outside GitHub. See `README.md`, `.gitignore`, and `SEO_AIO_ANALYTICS_PLAN.md`.
 

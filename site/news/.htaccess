@@ -1,0 +1,2 @@
+RewriteEngine On
+RewriteRule ^story/([a-z0-9-]+)/?$ article.php?slug=$1 [L,QSA]
