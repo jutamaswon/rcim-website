@@ -40,3 +40,5 @@ The hostname, Search Console, GA4, and domain switch remain deferred until accou
 - Images and other media. Final resized images will be kept in the project media store and deployed to the website separately, using stable paths referenced by the HTML.
 
 See [RCIM_REBUILD_PLAN.md](RCIM_REBUILD_PLAN.md) and [SEO_AIO_ANALYTICS_PLAN.md](SEO_AIO_ANALYTICS_PLAN.md).
+
+For the current state and the next steps, see [HANDOFF.md](HANDOFF.md).
