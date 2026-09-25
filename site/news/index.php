@@ -7,5 +7,5 @@ foreach ($rows as $row) {
     $url = '/news/story/' . rawurlencode($row['slug']) . '/';
     echo '<a class="news-card" href="' . e($url) . '"><time datetime="' . e(substr($row['published_at'],0,10)) . '">' . e(substr($row['published_at'],0,10)) . ' · ' . e($row['category']) . '</time><strong>' . e($row['title']) . '</strong><p>' . e($row['summary']) . '</p><span>อ่านข่าว →</span></a>';
 }
-echo '</div><p><a href="/news/archive/">ดูข่าวย้อนหลังจากเว็บไซต์เดิม →</a></p></div>';
+echo '</div><p><a href="/news/archive/">ดูคลังข่าวทั้งหมด →</a></p></div>';
 public_footer();

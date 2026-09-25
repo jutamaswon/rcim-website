@@ -1,21 +1,30 @@
-# RCIM design system
+# RCIM website design
 
-This design follows the UI UX Pro Max accessibility and responsive guidance, then uses RCIM colours and a logo found in the supplied public uploads archive. Official brand approval remains a launch check.
+The interface follows UI UX Pro Max guidance for clear hierarchy, navigation, contrast, keyboard use, and responsive layouts. The visual direction is a restrained institutional grid with RCIM pink as the action colour. The supplied public RCIM logo appears in the header; brand approval remains a launch check.
 
-## Colours and type
+## Page flow
 
-- Primary: `#7d1648` for links and headings; action pink: `#a82362`.
-- Text: `#25313a` on white; muted text: `#58636b`; light section background: `#fbf1f5`.
-- Body: Tahoma with Thai capable system fallbacks, 16 px minimum and generous line height.
+1. Home: purpose and primary action → routes for applicants, students, and researchers → master's and doctoral programmes → news → college and contact.
+2. Programme landing: brief introduction → master's courses → doctoral courses → qualification, research, and application links.
+3. Inner page: breadcrumb → page title → readable content → related child pages.
+4. News archive: search → year groups → compact dated rows. All article links remain in the HTML for search engines and visitors without JavaScript.
 
-## Components
+## Design tokens
 
-- Navigation, hero, cards, content, and footer share one CSS file; homepage additions use `site/assets/home.css`.
-- Links and buttons have visible keyboard focus; touch controls have at least 44 px height.
-- Layout stacks at 850 px and cards become one column at 580 px.
-- Reduced motion preference disables smooth scrolling.
-- Images have dimensions and lazy loading; WebP variants are generated at up to 480 and 1200 px.
+- Text/navy: `#17283a` and `#14263b`.
+- RCIM action pink: `#7b194c`; accent: `#a51f62`.
+- Warm neutral surface: `#f7f5f2`; border: `#dce1e5`.
+- Thai-capable system type: Tahoma, Noto Sans Thai, Arial; body starts at 16 px with 1.75 line height.
+- Maximum content width: 1200 px; article width: 900 px.
 
-## Editing rule
+## Implementation
 
-Keep headings descriptive and in order. Write meaningful link text and image alt text. Check Thai on a phone and desktop. Use the official RCIM logo only if RCIM approves it for the new site.
+- Shared rules are in `site/assets/site.css`; home and programme landing rules are in `site/assets/home.css`.
+- Navigation and archive search use the small `site/assets/site.js` file. News search is progressive enhancement; links work without it.
+- Buttons and menu controls are at least 44 px high, links have visible focus, and the mobile menu exposes its expanded state.
+- Generated images use WebP, dimensions, and lazy loading. The home hero uses CSS and text rather than a large decorative download.
+- Check 375 px, 768 px, 1024 px, and 1440 px layouts when changing shared styles. Do not allow horizontal scrolling.
+
+## Content rule
+
+Treat this as the RCIM website. Write labels as normal college content. Use descriptive headings and link text. Staff should review programme names, personnel details, dates, and campus contact information before launch.

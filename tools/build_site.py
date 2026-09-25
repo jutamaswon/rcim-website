@@ -25,6 +25,7 @@ BAD_TAGS = {"script", "style", "iframe", "form", "input", "button", "textarea", 
 ALLOWED_ATTRS = {"href", "src", "srcset", "alt", "title", "width", "height", "loading", "decoding", "class", "id", "colspan", "rowspan", "target", "rel", "aria-label"}
 ID_PATHS = {}
 ALIASES = {
+    "/mainrcim/": "/about-rcim/",
     "/หลักสูตร/": "/masterdoctor/",
     "/รับรองคุณวุฒิ-หลักสูตรข/": "/masterdoctor/qualifications-certified-rcim/",
     "/หลักสูตร/ปริญญาเอก/d-m/": "/masterdoctor/doctor/dm2/",
@@ -98,11 +99,11 @@ def clean_content(source, media, missing):
         if not found:
             return ""
         url = html.escape(found.group(0), quote=True)
-        return f'<p><a href="{url}">เปิดเอกสารหรือสื่อที่ฝังไว้จากเว็บไซต์เดิม</a></p>'
+        return f'<p><a href="{url}">เปิดเอกสารหรือสื่อประกอบ</a></p>'
     source = re.sub(r"\[embedpress.*?\[/embedpress\][^\]]*\]", embed_link, source or "", flags=re.S | re.I)
     source = re.sub(r"\[/?caption[^\]]*\]", "", source, flags=re.I)
     source = source.replace("[object Object]", "")
-    source = source.replace("[__HEYPUBLISHER_SUBMISSION_FORM_GOES_HERE__]", "<p>แบบฟอร์มส่งบทความจากเว็บไซต์เดิมอยู่ระหว่างตรวจสอบ กรุณาติดต่อวิทยาลัย</p>")
+    source = source.replace("[__HEYPUBLISHER_SUBMISSION_FORM_GOES_HERE__]", "<p>หากต้องการส่งบทความ กรุณาติดต่อวิทยาลัยเพื่อขอรายละเอียด</p>")
     try:
         root = LH.fragment_fromstring(source or "", create_parent="div")
     except Exception:
@@ -193,11 +194,11 @@ def document(title, description, path, body, *, kind="WebPage", modified=None, p
     if published and kind == "NewsArticle":
         schema["datePublished"] = published[:10]
     nav = [("เกี่ยวกับวิทยาลัย", "/about-rcim/"), ("หลักสูตร", "/masterdoctor/"),
-           ("นักศึกษา", "/for-students-rcim/"), ("ข่าวสาร", "/news/"),
-           ("สมัครเรียน", "/apply-online-rcim/"), ("ติดต่อ", "/page-id35/")]
+           ("สำหรับนักศึกษา", "/for-students-rcim/"), ("ข่าวสาร", "/news/"),
+           ("ติดต่อ", "/page-id35/")]
     links = "".join(f'<a href="{u}">{esc(n)}</a>' for n, u in nav)
-    home_css = '<link rel="stylesheet" href="/assets/home.css">' if path == "/" else ""
-    return f'''<!doctype html><html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{esc(title)} | RCIM</title><meta name="description" content="{esc(description[:158])}"><link rel="canonical" href="{esc(canonical)}"><meta property="og:type" content="{'article' if kind == 'NewsArticle' else 'website'}"><meta property="og:title" content="{esc(title)}"><meta property="og:description" content="{esc(description[:158])}"><meta property="og:url" content="{esc(canonical)}"><link rel="stylesheet" href="/assets/site.css">{home_css}<script type="application/ld+json">{json.dumps(schema, ensure_ascii=False).replace("<", "\\u003c")}</script></head><body><a class="skip" href="#main">ข้ามไปยังเนื้อหา</a><header class="site-header"><div class="wrap header-inner"><a class="brand" href="/"><img class="brand-mark-image" src="/media/2022/06/Logo-RCIM2019-TH-480.webp" width="52" height="52" alt=""><span><strong>RCIM</strong><small>วิทยาลัยนวัตกรรมการจัดการ</small></span></a><button id="menu-toggle" class="menu-toggle" type="button" aria-controls="site-nav" aria-expanded="false">เมนู</button><nav id="site-nav" aria-label="เมนูหลัก">{links}</nav></div></header><main id="main">{body}</main><footer><div class="wrap footer-grid"><div><strong>RCIM</strong><p>วิทยาลัยนวัตกรรมการจัดการ<br>มหาวิทยาลัยเทคโนโลยีราชมงคลรัตนโกสินทร์</p></div><div><p>96 หมู่ 3 ถนนพุทธมณฑลสาย 5 ต.ศาลายา อ.พุทธมณฑล จ.นครปฐม 73170</p><p>โทร. 0-2441-6067 · 092-442-8000</p></div></div></footer><script src="/assets/site.js" defer></script></body></html>'''
+    home_css = '<link rel="stylesheet" href="/assets/home.css">' if path in ("/", "/masterdoctor/") else ""
+    return f'''<!doctype html><html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{esc(title)} | RCIM</title><meta name="description" content="{esc(description[:158])}"><link rel="canonical" href="{esc(canonical)}"><meta property="og:type" content="{'article' if kind == 'NewsArticle' else 'website'}"><meta property="og:title" content="{esc(title)}"><meta property="og:description" content="{esc(description[:158])}"><meta property="og:url" content="{esc(canonical)}"><link rel="stylesheet" href="/assets/site.css">{home_css}<script type="application/ld+json">{json.dumps(schema, ensure_ascii=False).replace("<", "\\u003c")}</script></head><body><a class="skip" href="#main">ข้ามไปยังเนื้อหา</a><header class="site-header"><div class="wrap header-inner"><a class="brand" href="/"><img class="brand-mark-image" src="/media/2022/06/Logo-RCIM2019-TH-480.webp" width="52" height="52" alt=""><span><strong>RCIM</strong><small>วิทยาลัยนวัตกรรมการจัดการ</small></span></a><button id="menu-toggle" class="menu-toggle" type="button" aria-controls="site-nav" aria-expanded="false">เมนู</button><nav id="site-nav" aria-label="เมนูหลัก">{links}<a class="nav-apply" href="/apply-online-rcim/">สมัครเรียน <span aria-hidden="true">↗</span></a></nav></div></header><main id="main">{body}</main><footer><div class="wrap footer-grid"><div><a class="footer-brand" href="/">RCIM</a><p>วิทยาลัยนวัตกรรมการจัดการ<br>มหาวิทยาลัยเทคโนโลยีราชมงคลรัตนโกสินทร์</p></div><div><strong>ติดต่อ</strong><p>96 หมู่ 3 ถนนพุทธมณฑลสาย 5<br>ตำบลศาลายา อำเภอพุทธมณฑล จังหวัดนครปฐม 73170</p><a href="tel:+6624416067">02-441-6067</a></div><div><strong>สำรวจเว็บไซต์</strong><a href="/masterdoctor/">หลักสูตร</a><a href="/for-students-rcim/">สำหรับนักศึกษา</a><a href="/news/">ข่าวสาร</a><a href="/page-id35/">ติดต่อ</a></div></div><div class="wrap footer-bottom"><span>© RCIM · มหาวิทยาลัยเทคโนโลยีราชมงคลรัตนโกสินทร์</span></div></footer><script src="/assets/site.js" defer></script></body></html>'''
 
 
 def write_page(path, markup):
@@ -207,19 +208,78 @@ def write_page(path, markup):
     target.write_text("\n".join(line.expandtabs(4).rstrip() for line in formatted.splitlines()) + "\n", encoding="utf-8")
 
 
-def homepage_body(legacy_content, posts):
-    features = [
-        ("หลักสูตร", "สำรวจหลักสูตรระดับบัณฑิตศึกษา", "/masterdoctor/"),
-        ("สมัครเรียน", "ข้อมูลและช่องทางการสมัครเรียน", "/apply-online-rcim/"),
-        ("สำหรับนักศึกษา", "ปฏิทิน เอกสาร และแบบฟอร์ม", "/for-students-rcim/"),
-        ("เกี่ยวกับวิทยาลัย", "รู้จัก RCIM บุคลากร และงานวิชาการ", "/about-rcim/"),
-        ("ข่าวสาร", "ข่าวใหม่และประกาศของวิทยาลัย", "/news/"),
-        ("ติดต่อ", "ที่ตั้งและช่องทางติดต่อ", "/page-id35/"),
+def homepage_body(posts):
+    routes = [
+        ("01", "ผู้สนใจสมัครเรียน", "หลักสูตรและขั้นตอนการสมัคร", "/apply-online-rcim/"),
+        ("02", "นักศึกษาปัจจุบัน", "บริการ เอกสาร และงานวิจัย", "/for-students-rcim/"),
+        ("03", "งานวิจัยและวิชาการ", "ผลงานและข้อมูลวิชาการ", "/masterdoctor/research-academic/"),
     ]
-    cards = "".join(f'<a class="feature-card" href="{path}"><strong>{name}</strong><span>{desc}</span><b aria-hidden="true">→</b></a>' for name, desc, path in features)
+    route_cards = "".join(
+        f'<a class="route-card" href="{path}"><span class="route-number">{number}</span>'
+        f'<span class="route-copy"><strong>{name}</strong><small>{desc}</small></span>'
+        '<span class="route-arrow" aria-hidden="true">↗</span></a>'
+        for number, name, desc, path in routes
+    )
+    programmes = [
+        ("บริหารธุรกิจ", "MBA", "/masterdoctor/master/mba2/", "master"),
+        ("รัฐประศาสนศาสตร์", "MPA", "/masterdoctor/master/mpa2/", "master"),
+        ("ศึกษาศาสตร์", "M.Ed.", "/masterdoctor/master/med2/", "master"),
+        ("การจัดการ", "MM", "/masterdoctor/master/mm2/", "master"),
+        ("บริหารธุรกิจ", "DBA", "/masterdoctor/doctor/dba2/", "doctor"),
+        ("รัฐประศาสนศาสตร์", "DPA", "/masterdoctor/doctor/dpa2/", "doctor"),
+        ("บริหารการศึกษาและนวัตกรรม", "Ph.D.", "/masterdoctor/doctor/phd-eai/", "doctor"),
+        ("การจัดการ", "DM", "/masterdoctor/doctor/dm2/", "doctor"),
+    ]
+    def programme_cards(level):
+        return "".join(
+            f'<a class="programme-card" href="{path}"><span class="programme-code">{code}</span>'
+            f'<strong>{name}</strong><span class="card-arrow" aria-hidden="true">↗</span></a>'
+            for name, code, path, item_level in programmes if item_level == level
+        )
     recent = sorted(posts, key=lambda r: r.get("date", ""), reverse=True)[:3]
-    news = "".join(f'<a class="news-card" href="{html.escape(r["path"])}"><time>{html.escape(r.get("date", "")[:10])}</time><strong>{html.escape(r["title"])}</strong><span>อ่านข่าว →</span></a>' for r in recent)
-    return f'''<section class="home-hero"><div class="wrap"><span class="eyebrow">มหาวิทยาลัยเทคโนโลยีราชมงคลรัตนโกสินทร์</span><h1>วิทยาลัยนวัตกรรมการจัดการ</h1><p>แหล่งรวมข้อมูลหลักสูตร ข่าวสาร และบริการสำหรับนักศึกษาและผู้สนใจศึกษา</p><div class="hero-actions"><a class="button-light" href="/masterdoctor/">ดูหลักสูตร</a><a class="button-outline" href="/apply-online-rcim/">สมัครเรียน</a></div></div></section><section class="wrap section"><div class="section-head"><span class="eyebrow">ค้นหาข้อมูล</span><h2>สิ่งที่คุณต้องการ</h2></div><div class="feature-grid">{cards}</div></section><section class="home-news"><div class="wrap section"><div class="section-head"><span class="eyebrow">ข่าวสาร</span><h2>ประกาศล่าสุดจากเว็บไซต์เดิม</h2><a href="/news/archive/">ดูข่าวย้อนหลังทั้งหมด →</a></div><div class="news-grid">{news}</div></div></section><section class="wrap section legacy-home"><h2>ข้อมูลจากเว็บไซต์เดิม</h2><div class="prose">{legacy_content}</div></section>'''
+    news = "".join(
+        f'<a class="news-card" href="{html.escape(r["path"])}"><time datetime="{html.escape(r.get("date", "")[:10])}">{html.escape(r.get("date", "")[:10])}</time>'
+        f'<strong>{html.escape(r["title"])}</strong><span>อ่านรายละเอียด <span aria-hidden="true">↗</span></span></a>'
+        for r in recent
+    )
+    return f'''<section class="home-hero"><div class="wrap hero-grid">
+      <div class="hero-copy"><span class="eyebrow">RAJAMANGALA UNIVERSITY OF TECHNOLOGY RATTANAKOSIN</span>
+      <h1>วิทยาลัยนวัตกรรม<br><em>การจัดการ</em></h1>
+      <p>เรียนรู้ ต่อยอด และสร้างโอกาสใหม่ ผ่านหลักสูตรระดับบัณฑิตศึกษาของ RCIM</p>
+      <div class="hero-actions"><a class="button-primary" href="/masterdoctor/">สำรวจหลักสูตร <span aria-hidden="true">↗</span></a><a class="button-text" href="/apply-online-rcim/">ข้อมูลการสมัครเรียน <span aria-hidden="true">→</span></a></div></div>
+      <div class="hero-panel" aria-label="ข้อมูลหลักสูตร"><div class="hero-panel-top"><span>RCIM / GRADUATE STUDIES</span><span>01 — 08</span></div><div class="hero-panel-main"><span>พื้นที่สำหรับ<br>ความก้าวหน้าของคุณ</span><strong>8</strong><small>หลักสูตรปริญญาโทและเอก</small></div><div class="hero-panel-bottom"><span>มหาวิทยาลัยเทคโนโลยีราชมงคลรัตนโกสินทร์</span><span aria-hidden="true">↗</span></div></div>
+    </div></section>
+    <section class="wrap section routes-section" aria-labelledby="routes-title"><div class="section-heading"><div><span class="eyebrow">เริ่มต้นที่นี่</span><h2 id="routes-title">คุณกำลังมองหาอะไร</h2></div></div><div class="route-grid">{route_cards}</div></section>
+    <section class="programmes-section" aria-labelledby="programmes-title"><div class="wrap section"><div class="section-heading"><div><span class="eyebrow">หลักสูตร RCIM</span><h2 id="programmes-title">เลือกเส้นทางการศึกษาของคุณ</h2><p>หลักสูตรระดับบัณฑิตศึกษาด้านการบริหาร การจัดการ และการศึกษา</p></div><a class="section-link" href="/masterdoctor/">ดูข้อมูลหลักสูตรทั้งหมด <span aria-hidden="true">↗</span></a></div>
+    <div class="programme-group"><div class="group-heading"><span>01</span><h3>ปริญญาโท</h3></div><div class="programme-grid">{programme_cards('master')}</div></div>
+    <div class="programme-group"><div class="group-heading"><span>02</span><h3>ปริญญาเอก</h3></div><div class="programme-grid">{programme_cards('doctor')}</div></div></div></section>
+    <section class="home-news" aria-labelledby="news-title"><div class="wrap section"><div class="section-heading"><div><span class="eyebrow">ข่าวและประกาศ</span><h2 id="news-title">ข่าวสารจากวิทยาลัย</h2></div><a class="section-link" href="/news/">ดูข่าวทั้งหมด <span aria-hidden="true">↗</span></a></div><div class="news-grid">{news}</div></div></section>
+    <section class="wrap section about-section" aria-labelledby="about-title"><div class="about-copy"><span class="eyebrow">เกี่ยวกับ RCIM</span><h2 id="about-title">การเรียนรู้ที่เชื่อมความรู้<br>กับการลงมือทำ</h2><p>วิทยาลัยนวัตกรรมการจัดการเป็นส่วนหนึ่งของมหาวิทยาลัยเทคโนโลยีราชมงคลรัตนโกสินทร์ มีข้อมูลหลักสูตร บุคลากร และงานวิชาการสำหรับผู้สนใจศึกษาและนักศึกษา</p><a class="section-link" href="/about-rcim/">รู้จักวิทยาลัย <span aria-hidden="true">↗</span></a></div><div class="contact-panel"><span class="eyebrow">ติดต่อวิทยาลัย</span><h3>พูดคุยกับเรา</h3><p><strong>ศาลายา</strong><br>96 หมู่ 3 ถนนพุทธมณฑลสาย 5 ตำบลศาลายา อำเภอพุทธมณฑล จังหวัดนครปฐม 73170<br><a href="tel:+6624416067">02-441-6067</a> · <a href="tel:+66924428000">092-442-8000</a> · <a href="tel:+66924429000">092-442-9000</a></p><p><strong>วังไกลกังวล</strong><br>ถนนเพชรเกษม ตำบลหนองแก อำเภอหัวหิน จังหวัดประจวบคีรีขันธ์ 77110<br><a href="tel:+66924427000">092-442-7000</a></p><a class="contact-link" href="/page-id35/">ที่ตั้งและช่องทางติดต่อ <span aria-hidden="true">↗</span></a></div></section>'''
+
+
+def programmes_body():
+    groups = [
+        ("ปริญญาโท", [
+            ("MBA", "บริหารธุรกิจ", "/masterdoctor/master/mba2/"),
+            ("MPA", "รัฐประศาสนศาสตร์", "/masterdoctor/master/mpa2/"),
+            ("M.Ed.", "ศึกษาศาสตร์", "/masterdoctor/master/med2/"),
+            ("MM", "การจัดการ", "/masterdoctor/master/mm2/"),
+        ]),
+        ("ปริญญาเอก", [
+            ("DBA", "บริหารธุรกิจ", "/masterdoctor/doctor/dba2/"),
+            ("DPA", "รัฐประศาสนศาสตร์", "/masterdoctor/doctor/dpa2/"),
+            ("Ph.D.", "บริหารการศึกษาและนวัตกรรม", "/masterdoctor/doctor/phd-eai/"),
+            ("DM", "การจัดการ", "/masterdoctor/doctor/dm2/"),
+        ]),
+    ]
+    sections = []
+    for name, items in groups:
+        links = "".join(
+            f'<a class="programme-card" href="{path}"><span class="programme-code">{code}</span><strong>{label}</strong><span class="card-arrow" aria-hidden="true">↗</span></a>'
+            for code, label, path in items
+        )
+        sections.append(f'<section class="programme-group"><h2>{name}</h2><div class="programme-grid">{links}</div></section>')
+    return '''<div class="page-hero"><div class="wrap"><nav class="breadcrumbs" aria-label="ตำแหน่งหน้า"><a href="/">หน้าหลัก</a><span aria-hidden="true">/</span><span>หลักสูตร</span></nav><span class="eyebrow">หลักสูตร RCIM</span><h1>หลักสูตรระดับบัณฑิตศึกษา</h1><p>สำรวจหลักสูตรปริญญาโทและปริญญาเอกของวิทยาลัยนวัตกรรมการจัดการ</p></div></div>''' + '<div class="wrap section programme-landing"><div class="programme-intro"><p>เลือกดูรายละเอียดหลักสูตรที่สนใจ พร้อมข้อมูลคุณวุฒิและช่องทางการสมัครเรียน</p><a href="/apply-online-rcim/">ข้อมูลการสมัครเรียน ↗</a></div>' + "".join(sections) + '<div class="programme-extra"><a href="/masterdoctor/qualifications-certified-rcim/">ข้อมูลการรับรองคุณวุฒิและหลักสูตร ↗</a><a href="/masterdoctor/research-academic/">งานวิจัยและวิชาการ ↗</a></div></div>'
 
 
 def main():
@@ -250,19 +310,39 @@ def main():
         if child_pages:
             child_html = '<section class="related"><h2>หัวข้อที่เกี่ยวข้อง</h2><div class="link-grid">' + "".join(f'<a class="link-card" href="{html.escape(p["path"])}">{html.escape(p["title"])}</a>' for p in child_pages) + '</div></section>'
         if not text_only(content).strip() and not child_pages and not any(tag in content for tag in ("<img", "<a", "<table")):
-            content = '<p>หน้านี้อยู่ระหว่างตรวจสอบข้อมูลจากต้นฉบับ กรุณาดูหัวข้ออื่นหรือสอบถามวิทยาลัย</p>'
+            content = '<p>หน้านี้อยู่ระหว่างปรับปรุงข้อมูล กรุณาดูหัวข้ออื่นหรือสอบถามวิทยาลัย</p>'
         date = rec.get("date", "")[:10]
-        type_label = "ข่าวย้อนหลัง" if rec["type"] == "post" else "ข้อมูลวิทยาลัย"
-        body = f'<div class="page-hero"><div class="wrap"><span class="eyebrow">{type_label}</span><h1>{html.escape(title)}</h1>{f"<time datetime={date}>{date}</time>" if rec["type"] == "post" else ""}</div></div><div class="wrap content-layout"><article class="prose">{content}{child_html}</article></div>'
+        section = path.strip("/").split("/")[0]
+        labels = {"about-rcim": "เกี่ยวกับวิทยาลัย", "masterdoctor": "หลักสูตรและวิชาการ",
+                  "for-students-rcim": "สำหรับนักศึกษา", "apply-online-rcim": "การสมัครเรียน",
+                  "page-id35": "ติดต่อวิทยาลัย"}
+        type_label = "ข่าวสาร" if rec["type"] == "post" else labels.get(section, "ข้อมูล RCIM")
+        section_url = "/news/" if rec["type"] == "post" else ("/" + section + "/" if section in labels else "/about-rcim/")
+        crumb = f'<nav class="breadcrumbs" aria-label="ตำแหน่งหน้า"><a href="/">หน้าหลัก</a><span aria-hidden="true">/</span><a href="{html.escape(section_url)}">{type_label}</a></nav>'
+        if path == section_url:
+            crumb = '<nav class="breadcrumbs" aria-label="ตำแหน่งหน้า"><a href="/">หน้าหลัก</a><span aria-hidden="true">/</span><span> ' + type_label + '</span></nav>'
+        body = f'<div class="page-hero"><div class="wrap">{crumb}<span class="eyebrow">{type_label}</span><h1>{html.escape(title)}</h1>{f"<time datetime={date}>{date}</time>" if rec["type"] == "post" else ""}</div></div><div class="wrap content-layout"><article class="prose">{content}{child_html}</article></div>'
         if path == "/":
-            body = homepage_body(content + child_html, posts)
+            body = homepage_body(posts)
             title = "วิทยาลัยนวัตกรรมการจัดการ"
+        elif path == "/masterdoctor/":
+            body = programmes_body()
+            title = "หลักสูตรระดับบัณฑิตศึกษา"
         description = text_only(rec.get("content_html") or title)[:158] or title
         write_page(path, document(title, description, path, body, kind="NewsArticle" if rec["type"] == "post" else "WebPage", modified=rec.get("modified"), published=rec.get("date")))
         manifest.append({"id": rec["id"], "type": rec["type"], "title": title, "path": path, "date": date, "lastmod": rec.get("modified", "")[:10], "content_chars": len(text_only(rec.get("content_html") or "")), "rendered_chars": len(text_only(body))})
     latest = sorted(posts, key=lambda r: r.get("date", ""), reverse=True)
-    cards = "".join(f'<a class="news-card" href="{html.escape(r["path"])}"><time>{html.escape(r.get("date", "")[:10])}</time><strong>{html.escape(r["title"])}</strong><span>อ่านข่าวย้อนหลัง →</span></a>' for r in latest)
-    news_body = '<div class="page-hero"><div class="wrap"><span class="eyebrow">ข่าวและประกาศ</span><h1>ข่าวสาร RCIM</h1><p>ข่าวย้อนหลังจากเว็บไซต์เดิมและข่าวใหม่จากวิทยาลัย</p></div></div><div class="wrap section"><div class="news-grid">' + cards + '</div></div>'
+    by_year = {}
+    for post in latest:
+        by_year.setdefault(post.get("date", "")[:4] or "อื่น ๆ", []).append(post)
+    groups = []
+    for year, items in by_year.items():
+        rows = "".join(
+            f'<a class="archive-row" href="{html.escape(r["path"])}"><time datetime="{html.escape(r.get("date", "")[:10])}">{html.escape(r.get("date", "")[:10])}</time><strong>{html.escape(r["title"])}</strong><span aria-hidden="true">↗</span></a>'
+            for r in items
+        )
+        groups.append(f'<section class="archive-year"><div class="archive-year-heading"><h2>{year}</h2><span>{len(items)} รายการ</span></div><div class="archive-list">{rows}</div></section>')
+    news_body = '<div class="page-hero"><div class="wrap"><nav class="breadcrumbs" aria-label="ตำแหน่งหน้า"><a href="/">หน้าหลัก</a><span aria-hidden="true">/</span><a href="/news/">ข่าวสาร</a></nav><span class="eyebrow">ข่าวสาร RCIM</span><h1>คลังข่าวและประกาศ</h1><p>ค้นหาข่าวและประกาศของวิทยาลัยตามปีที่เผยแพร่</p></div></div><div class="wrap section archive-page"><label class="search-label" for="archive-search">ค้นหาข่าว</label><input id="archive-search" class="archive-search" type="search" placeholder="พิมพ์หัวข้อข่าว" autocomplete="off"><p id="archive-empty" class="archive-empty" hidden>ไม่พบข่าวที่ตรงกับคำค้น</p>' + ''.join(groups) + '</div>'
     write_page("/news/archive/", document("ข่าวย้อนหลัง RCIM", "ข่าวและประกาศย้อนหลัง วิทยาลัยนวัตกรรมการจัดการ", "/news/archive/", news_body))
     sitemap = ['<?xml version="1.0" encoding="UTF-8"?>', '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
     for row in manifest + [{"path": "/news/", "date": "2026-09-25"}, {"path": "/news/archive/", "date": "2026-09-25"}]:
